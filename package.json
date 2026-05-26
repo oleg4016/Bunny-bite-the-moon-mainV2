@@ -1,0 +1,20 @@
+{
+  "name": "tiny-bunny-game",
+  "version": "1.0.0",
+  "description": "TinyBunny NW.js Port",
+  "main": "index.html",
+  "window": {
+    "title": "TinyBunny",
+    "width": 1280,
+    "height": 720,
+    "fullscreen": false,
+    "resizable": true,
+    "position": "center"
+  },
+  "scripts": {
+    "build": "nwbuild ./ --version=0.111.3 --platforms=win --flavor=normal --outDir=./dist"
+  },
+  "devDependencies": {
+    "nw-builder": "latest"
+  }
+}
