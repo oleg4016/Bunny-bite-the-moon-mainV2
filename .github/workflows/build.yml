@@ -5,11 +5,16 @@ on:
     branches:
       - main
       - master
-  workflow_dispatch: # Позволяет запускать сборку вручную из вкладки Actions
+  workflow_dispatch:
+
+env:
+  # Исправляет предупреждение "Node.js 20 actions are deprecated"
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build-windows:
-    runs-on: windows-latest
+    # Исправляет уведомление "windows-latest redirect"
+    runs-on: windows-2025
 
     steps:
       - name: Checkout repository
@@ -20,14 +25,16 @@ jobs:
         with:
           node-version: '26.1.0'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install nw-builder
+        # Явно устанавливаем свежий nw-builder перед сборкой
+        run: npm install nw-builder@latest --save-dev
 
-      - name: Build with nw-builder
-        run: npm run build
+      - name: Build NW.js app
+        # Исправленный синтаксис для nw-builder v4+
+        run: npx nwbuild --mode=build --platform=win --arch=x64 --version=0.111.3 --flavor=normal --app.name="TinyBunny" --outDir=out ./
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: TinyBunny-Windows-Build
-          path: ./dist/
+          path: out/
