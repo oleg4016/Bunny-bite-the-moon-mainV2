@@ -8,12 +8,10 @@ on:
   workflow_dispatch:
 
 env:
-  # Исправляет предупреждение "Node.js 20 actions are deprecated"
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build-windows:
-    # Исправляет уведомление "windows-latest redirect"
     runs-on: windows-2025
 
     steps:
@@ -26,12 +24,11 @@ jobs:
           node-version: '26.1.0'
 
       - name: Install nw-builder
-        # Явно устанавливаем свежий nw-builder перед сборкой
         run: npm install nw-builder@latest --save-dev
 
       - name: Build NW.js app
-        # Исправленный синтаксис для nw-builder v4+
-        run: npx nwbuild --mode=build --platform=win --arch=x64 --version=0.111.3 --flavor=normal --app.name="TinyBunny" --outDir=out ./
+        # Вот здесь мы добавили --glob=false, чтобы исправить ошибку с package.json
+        run: npx nwbuild --mode=build --platform=win --arch=x64 --version=0.111.3 --flavor=normal --glob=false --app.name="TinyBunny" --outDir=out ./
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
