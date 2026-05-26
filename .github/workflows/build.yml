@@ -1,0 +1,33 @@
+name: Build NW.js PC Version
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch: # Позволяет запускать сборку вручную из вкладки Actions
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 26.1.0
+        uses: actions/setup-node@v4
+        with:
+          node-version: '26.1.0'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build with nw-builder
+        run: npm run build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TinyBunny-Windows-Build
+          path: ./dist/
